@@ -1,12 +1,18 @@
-		var startTime, delayTime;
-		delayTime = (Math.random()*1500);
+		var startTime, delayTime, maxDelay;
 
-		displayShapeAfterTimeout(delayTime, function () {
-			startTime = new Date().getTime();
-		});
+		maxDelay = 3000;
+		
+		createShape();
+		delayTime = (Math.random()*maxDelay);
+		setTimeout(function () {
+			startTime = Date.now();
+			document.getElementById('coloredShape').style.display = "block";
+		}, delayTime);
 
 		function displayShapeAfterTimeout(dTime, callback) {
-			setTimeout(createShape(), dTime);
+			console.log(dTime);
+			setTimeout(createShape, dTime);
+			console.log("done");
 			// Now set the start time.
 			callback();
 		}
@@ -61,18 +67,27 @@
 			setShapeType();
 			setShapePos();
 			setShapeColor();
-			document.getElementById('coloredShape').style.display = "block";
+			// Setup the shape ready to display. Set the START time for when the shape is displayed ie. display="block"
+			//document.getElementById('coloredShape').style.display = "block";
 		}
 
 		document.getElementById('coloredShape').onclick = function () {
-			var endTime = new Date().getTime();
+			var endTime = Date.now();
 			var timeTaken = (endTime - startTime)/1000;
+			this.style.display = "none";
 			document.getElementById('timeResult').innerHTML = "Your time: " + timeTaken + "s";
-
-			document.getElementById('coloredShape').style.display = "none";
-			delayTime = (Math.random()*1500);
+			
+			/*
 			displayShapeAfterTimeout(delayTime, function () {
 				startTime = new Date().getTime();
+				document.getElementById('coloredShape').style.display = "block";
 			});
+			*/
+			createShape();
+			delayTime = (Math.random()*maxDelay);
+			setTimeout(function () {
+				startTime = Date.now();
+				document.getElementById('coloredShape').style.display = "block";
+			}, delayTime);
 
 		}
