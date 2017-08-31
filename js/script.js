@@ -1,6 +1,16 @@
-		createShape();
-		var startTime = new Date().getTime();
-	
+		var startTime, delayTime;
+		delayTime = (Math.random()*1500);
+
+		displayShapeAfterTimeout(delayTime, function () {
+			startTime = new Date().getTime();
+		});
+
+		function displayShapeAfterTimeout(dTime, callback) {
+			setTimeout(createShape(), dTime);
+			// Now set the start time.
+			callback();
+		}
+		
 		function setShapeType() {
 			var shapeType = (Math.floor(Math.random()*2));
 
@@ -55,19 +65,14 @@
 		}
 
 		document.getElementById('coloredShape').onclick = function () {
-			// body...
 			var endTime = new Date().getTime();
 			var timeTaken = (endTime - startTime)/1000;
 			document.getElementById('timeResult').innerHTML = "Your time: " + timeTaken + "s";
 
-			var delayTime = (Math.random()*1500);
-
 			document.getElementById('coloredShape').style.display = "none";
-
-			setTimeout(createShape, delayTime);
-			
-			startTime = new Date().getTime();
-
-			//document.getElementById('coloredShape').style.display = "none";
+			delayTime = (Math.random()*1500);
+			displayShapeAfterTimeout(delayTime, function () {
+				startTime = new Date().getTime();
+			});
 
 		}
