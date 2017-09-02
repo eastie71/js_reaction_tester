@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Reaction Timer</title>
+	<title>Reaction Timer Game</title>
 	
 	<meta charset="utf-8" />
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
@@ -10,11 +10,15 @@
 	<link rel="stylesheet" type="text/css" href="style/style.css">
 </head>
 <body>
-	<h1>Test your Reactions!</h1>
+	<h1>Test your Reactions Game!</h1>
 
 	<p>Click on the boxes and circles as quickly as your can!</p>
+	<button id="resetTime">Reset All Times</button>
 
-	<p id="timeResult">Your time:</p>
+	<p id="lastTimeResult">Your time:</p>
+	<p id="counter">Successful clicks:</p>
+	<p id="average">Average time:</p>
+	<p id="lastXResults"></p>
 
 	<div id="clickArea">
 		<div id="coloredShape">					

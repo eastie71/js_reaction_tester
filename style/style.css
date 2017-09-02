@@ -11,6 +11,10 @@ body {
 	background-color: red;
 }
 
-#timeResult {
+#lastTimeResult {
 	font-weight: bold;
+}
+
+#resetTime {
+	display: none;
 }

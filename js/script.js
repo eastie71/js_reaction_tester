@@ -1,20 +1,34 @@
-		var startTime, delayTime, maxDelay;
-
-		maxDelay = 3000;
+		var startTime, delayTime, maxDelay, bestTime, avgTime, totalTime, lastXTime, best10Time, countX, totalCount;
+		maxRangeCount = 10;
+		maxDelay = 2000; // Max 2 second delay.
 		
-		createShape();
-		delayTime = (Math.random()*maxDelay);
-		setTimeout(function () {
-			startTime = Date.now();
-			document.getElementById('coloredShape').style.display = "block";
-		}, delayTime);
+		resetTimes();
+		displayShapeAfterTimeout();
+		
+		function resetTimes() {
+			lastXTime = avgTime = countX = totalCount = totalTime = 0;
+			bestTime = bestXTime = 1000000;
+			document.getElementById('lastTimeResult').innerHTML = "Your time:";
+			document.getElementById('counter').style.display = "none";
+			document.getElementById('average').style.display = "none";
+			document.getElementById('lastXResults').style.display = "none";
+		}
 
-		function displayShapeAfterTimeout(dTime, callback) {
-			console.log(dTime);
-			setTimeout(createShape, dTime);
-			console.log("done");
-			// Now set the start time.
-			callback();
+		function displayShapeAfterTimeout() {
+			createShape();
+			// First time make it the maximum delay time
+			if (totalCount == 0)
+				delayTime = maxDelay;
+			else
+				delayTime = (Math.random()*maxDelay);
+			// Remember that setTimeout is asynchronous - so even though there is a delay in displaying the
+			// shape for the user the program continues.
+			// Here we have the shape READY to be displayed - it will be displayed after the "delay" time,
+			// and the startTime is set at the same time
+			setTimeout(function () {
+				startTime = Date.now();
+				document.getElementById('coloredShape').style.display = "block";
+			}, delayTime);
 		}
 		
 		function setShapeType() {
@@ -63,31 +77,51 @@
 		}
 
 		function createShape() {
+			document.getElementById('coloredShape').style.display = "none";
 			setShapeSize();
 			setShapeType();
 			setShapePos();
 			setShapeColor();
-			// Setup the shape ready to display. Set the START time for when the shape is displayed ie. display="block"
-			//document.getElementById('coloredShape').style.display = "block";
 		}
+
+		document.getElementById('resetTime').onclick = function () {
+			alert("Reset times!");
+			resetTimes();
+			// Redisplay the image and reset the start time
+			document.getElementById('coloredShape').style.display = "none";
+			displayShapeAfterTimeout();
+		};
 
 		document.getElementById('coloredShape').onclick = function () {
 			var endTime = Date.now();
 			var timeTaken = (endTime - startTime)/1000;
+			document.getElementById('resetTime').style.display = "block";
 			this.style.display = "none";
-			document.getElementById('timeResult').innerHTML = "Your time: " + timeTaken + "s";
+	
 			
-			/*
-			displayShapeAfterTimeout(delayTime, function () {
-				startTime = new Date().getTime();
-				document.getElementById('coloredShape').style.display = "block";
-			});
-			*/
-			createShape();
-			delayTime = (Math.random()*maxDelay);
-			setTimeout(function () {
-				startTime = Date.now();
-				document.getElementById('coloredShape').style.display = "block";
-			}, delayTime);
+			countX++;
+			totalCount++;
+			totalTime += timeTaken;
+			avgTime = totalTime/totalCount;
+			if (bestTime > timeTaken) {
+				bestTime = timeTaken;
+			}
+			if (countX > maxRangeCount) {
+				if (bestXTime > lastXTime) {
+					bestXTime = lastXTime;
+				}
+				// Display Last and Best X times
+				//alert("Last X Times = " + lastXTime + ", Best X times = " + bestXTime);
 
+				countX = 1;
+				lastXTime = timeTaken;
+			} else {
+				lastXTime += timeTaken;
+			}
+			document.getElementById('lastTimeResult').innerHTML = "Your time: " + timeTaken + "s " + "(Best time: " + bestTime + "s)";
+			document.getElementById('counter').innerHTML = "Total Clicks: " + totalCount + " Run Count: " + countX + " of " + maxRangeCount;
+			document.getElementById('counter').style.display = "block";
+			//alert("Total Count = " + totalCount + ", Best Time = " + bestTime + ", Average Time = " + avgTime);
+
+			displayShapeAfterTimeout();
 		}
