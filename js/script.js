@@ -1,4 +1,4 @@
-		var startTime, delayTime, maxDelay, bestTime, avgTime, totalTime, lastXTime, best10Time, countX, totalCount;
+		var startTime, delayTime, maxDelay, bestTime, avgTime, totalTime, lastXTime, best10Time, countX, totalCount, thisXTime;
 		maxRangeCount = 10;
 		maxDelay = 2000; // Max 2 second delay.
 		
@@ -6,11 +6,10 @@
 		displayShapeAfterTimeout();
 		
 		function resetTimes() {
-			lastXTime = avgTime = countX = totalCount = totalTime = 0;
+			lastXTime = avgTime = countX = totalCount = totalTime = thisXTime = 0;
 			bestTime = bestXTime = 1000000;
 			document.getElementById('lastTimeResult').innerHTML = "Your time:";
 			document.getElementById('counter').style.display = "none";
-			document.getElementById('average').style.display = "none";
 			document.getElementById('lastXResults').style.display = "none";
 		}
 
@@ -97,16 +96,18 @@
 			var timeTaken = (endTime - startTime)/1000;
 			document.getElementById('resetTime').style.display = "block";
 			this.style.display = "none";
-	
-			
+		
 			countX++;
 			totalCount++;
 			totalTime += timeTaken;
-			avgTime = totalTime/totalCount;
+			// Round to 2 decimal places
+			avgTime = Math.round(100*totalTime/totalCount)/100;
 			if (bestTime > timeTaken) {
 				bestTime = timeTaken;
 			}
 			if (countX > maxRangeCount) {
+				// Round to 2 decimal places
+				lastXTime = Math.round(100*lastXTime)/100;
 				if (bestXTime > lastXTime) {
 					bestXTime = lastXTime;
 				}
@@ -114,13 +115,19 @@
 				//alert("Last X Times = " + lastXTime + ", Best X times = " + bestXTime);
 
 				countX = 1;
+				thisXTime = lastXTime;
 				lastXTime = timeTaken;
 			} else {
 				lastXTime += timeTaken;
 			}
 			document.getElementById('lastTimeResult').innerHTML = "Your time: " + timeTaken + "s " + "(Best time: " + bestTime + "s)";
-			document.getElementById('counter').innerHTML = "Total Clicks: " + totalCount + " Run Count: " + countX + " of " + maxRangeCount;
+			document.getElementById('counter').innerHTML = "Total Clicks: <strong>" + totalCount + "</strong> Average Click Time: <strong>" + avgTime + "s</strong>";
+			if (totalCount <= maxRangeCount)
+				document.getElementById('lastXResults').innerHTML ="Run Count: <strong>" + countX + "</strong> of <strong>" + maxRangeCount + "</strong>";
+			else
+				document.getElementById('lastXResults').innerHTML ="Run Count: <strong>" + countX + "</strong> of <strong>" + maxRangeCount + "</strong> Last " + maxRangeCount + ": <strong>" + thisXTime + "s</strong> (Best " + maxRangeCount + ": <strong>" + bestXTime + "s</strong>)";
 			document.getElementById('counter').style.display = "block";
+			document.getElementById('lastXResults').style.display = "block";
 			//alert("Total Count = " + totalCount + ", Best Time = " + bestTime + ", Average Time = " + avgTime);
 
 			displayShapeAfterTimeout();
