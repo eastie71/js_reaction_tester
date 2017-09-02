@@ -84,7 +84,7 @@
 		}
 
 		document.getElementById('resetTime').onclick = function () {
-			alert("Reset times!");
+			alert("Reset All Times...");
 			resetTimes();
 			// Redisplay the image and reset the start time
 			document.getElementById('coloredShape').style.display = "none";
