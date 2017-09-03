@@ -41,14 +41,28 @@
 			return;
 		}
 
-		function setShapeSize() {
+		function setShapeSizePos() {
 			var shapeSize = (Math.floor(Math.random()*300)+30);
+			var maxTopMargin = window.innerHeight;
+			var maxLeftMargin = window.innerWidth;
+
+			var marginTop = Math.max(Math.floor(Math.random()*maxTopMargin-300), 0);
+			var marginLeft = Math.max(Math.floor(Math.random()*maxLeftMargin)-30, 0);
+//alert("Win Height: "+ maxTopMargin + ", Win Width: " + maxLeftMargin + ", Margin Top: " + marginTop + ", Margin Left: " + marginLeft);
+			if (shapeSize + marginTop > window.innerHeight-300)
+				marginTop-=shapeSize;
+			if (shapeSize + marginLeft > window.innerWidth)
+				marginLeft -= shapeSize;
+			
+			document.getElementById('coloredShape').style.marginTop = marginTop + "px";
+			document.getElementById('coloredShape').style.marginLeft = marginLeft + "px";
 			document.getElementById('coloredShape').style.width = shapeSize + "px";
 			document.getElementById('coloredShape').style.height = shapeSize + "px";
 			return;
 		}
 
 		function setShapePos() {
+			//alert("width = " + window.innerWidth + ", height = " + window.innerHeight);
 			var maxTopMargin = window.screen.availHeight - 400;
 			var maxLeftMargin = window.screen.availWidth - 200;
 
@@ -77,9 +91,9 @@
 
 		function createShape() {
 			document.getElementById('coloredShape').style.display = "none";
-			setShapeSize();
+			setShapeSizePos();
 			setShapeType();
-			setShapePos();
+			//setShapePos();
 			setShapeColor();
 		}
 
