@@ -1,0 +1,20 @@
+body {
+	font-family: arial;
+}
+
+#clickArea {
+	width: 100%;
+	height: 100%;
+}
+
+#coloredShape {
+	background-color: red;
+}
+
+#lastTimeResult {
+	font-weight: bold;
+}
+
+#resetTime {
+	display: none;
+}
